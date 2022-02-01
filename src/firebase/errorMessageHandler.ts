@@ -2,7 +2,9 @@ const generalErrorMessage = "We're sorry, there was an unexpected problem that w
 
 //TOOD: replace null userFriendlyMessages with correct ones
 
-export const authErrorMessages = {
+const authErrorMessages: {
+  [key: string]: { internalDescription: string; userFriendlyDescription: string | null };
+} = {
   'auth/app-deleted': {
     internalDescription: 'Thrown if the instance of FirebaseApp has been deleted.',
     userFriendlyDescription: generalErrorMessage,
@@ -395,3 +397,19 @@ export const dbErrorMessages = {
       'File on the client does not match the size of the file recieved by the server. Try uploading again.',
   },
 };
+
+function getStringValue(value: any): string {
+  return String(value);
+}
+
+export function handleAuthErrorCode(code: any) {
+  const key = getStringValue(code);
+  const { internalDescription, userFriendlyDescription } = authErrorMessages[key];
+  console.error('internal error description: ', internalDescription);
+  console.error('userFriendly error description: ', userFriendlyDescription);
+  if (userFriendlyDescription == null) {
+    alert(internalDescription);
+  } else {
+    alert(userFriendlyDescription);
+  }
+}

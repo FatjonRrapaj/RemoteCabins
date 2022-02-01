@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useFirebase } from '../../firebase';
-import { ContextType } from '../../firebase/types';
+import { handleAuthErrorCode } from '../../firebase/errorMessageHandler';
 
 export default function Login() {
   const { firebaseAuth, firebase, loadingUser, setLoadingUser } = useFirebase();
@@ -26,10 +26,8 @@ export default function Login() {
     try {
       const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
       console.log('result: ', result);
-    } catch ({ code, message, name }) {
-      console.error('error code ', code);
-      console.error('error message ', message);
-      console.error('error name ', name);
+    } catch (error: any) {
+      handleAuthErrorCode(error.code);
     }
   };
 

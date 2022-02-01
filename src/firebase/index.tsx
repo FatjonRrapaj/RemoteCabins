@@ -1,10 +1,12 @@
 import { createContext, useEffect, useState, useContext } from 'react';
 import firebaseCredentials from './firebaseCredentials';
-import { initializeApp, getApp, getApps } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 import { Props, ContextType } from './types';
+
+import { handleAuthErrorCode } from './errorMessageHandler';
 
 const FirebaseContext = createContext<ContextType>(null!);
 
@@ -44,8 +46,8 @@ export default ({ children }: Props) => {
           setUser(null);
           setIsAuthenticated(false);
         }
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        handleAuthErrorCode(error.code);
       }
     });
 
