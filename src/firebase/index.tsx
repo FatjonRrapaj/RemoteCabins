@@ -23,7 +23,9 @@ export default ({ children }: Props) => {
     //Set up analytics
     setFirebase(app);
     //Database
-    setDatabase(getFirestore(app));
+    const firestore = getFirestore(app);
+    console.log('firestore at context: ', firestore);
+    setDatabase(firestore);
     //Auth
     const auth = getAuth(app);
     setFirebaseAuth(auth);

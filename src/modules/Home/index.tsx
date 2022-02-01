@@ -1,17 +1,38 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { signOut } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
+
 import { useFirebase } from '../../firebase';
-import { handleAuthErrorCode } from '../../firebase/errorMessageHandler';
+import { handleAuthErrorCode, handleDbErrorCode } from '../../firebase/errorMessageHandler';
+
+type Cabin = {
+  name: string;
+  location: string;
+};
 
 export default function Home() {
   const navigate = useNavigate();
-  const { firebaseAuth } = useFirebase();
+  const { firebaseAuth, database } = useFirebase();
+
+  const onAddHomeSubmitted = async ({ name, location }: Cabin) => {
+    try {
+      const docRef = await addDoc(collection(database, 'cabins'), {
+        name,
+        location,
+      });
+      console.log('docRef: ', docRef);
+    } catch (error: any) {
+      handleDbErrorCode(error.code);
+    }
+  };
+
+  useEffect(() => {
+    console.log('database: ', database);
+  }, []);
 
   function handleButtonClick(event: MouseEvent): void {
     event.preventDefault();
-
     signOut(firebaseAuth)
       .then(() => {
         navigate('/login', { replace: true });

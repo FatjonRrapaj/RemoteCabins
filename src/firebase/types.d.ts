@@ -1,5 +1,6 @@
 import { FirebaseApp } from 'firebase/app';
 import { Auth, User } from 'firebase/auth';
+import { Firestore } from 'firebase/firestore';
 import { ReactNode } from 'react';
 
 type Props = {

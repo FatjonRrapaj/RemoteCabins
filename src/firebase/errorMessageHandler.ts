@@ -323,7 +323,9 @@ const authErrorMessages: {
 
 //TOOD: replace null userFriendlyMessages with correct ones
 
-export const dbErrorMessages = {
+const dbErrorMessages: {
+  [key: string]: { internalDescription: string; userFriendlyDescription: string | null };
+} = {
   'storage/unknown': {
     internalDescription: 'An unknown error occurred',
     userFriendlyDescription: null,
@@ -395,6 +397,7 @@ export const dbErrorMessages = {
   'storage/server-file-wrong-size': {
     internalDescription:
       'File on the client does not match the size of the file recieved by the server. Try uploading again.',
+    userFriendlyDescription: null,
   },
 };
 
@@ -410,6 +413,20 @@ export function handleAuthErrorCode(code: any) {
   if (userFriendlyDescription == null) {
     alert(internalDescription);
   } else {
+    //complete the descriptions and remove the condition for great user experience!
+    alert(userFriendlyDescription);
+  }
+}
+
+export function handleDbErrorCode(code: any) {
+  const key = getStringValue(code);
+  const { internalDescription, userFriendlyDescription } = dbErrorMessages[key];
+  console.error('internal error description: ', internalDescription);
+  console.error('userFriendly error description: ', userFriendlyDescription);
+  if (userFriendlyDescription == null) {
+    alert(internalDescription);
+  } else {
+    //complete the descriptions and remove the condition for great user experience!
     alert(userFriendlyDescription);
   }
 }
