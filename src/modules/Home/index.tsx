@@ -93,14 +93,14 @@ export default function Home() {
               <input
                 required
                 className="input"
-                placeholder="Enter cabin name"
+                placeholder="Enter cabin name..."
                 onChange={onCabinNameChange}
                 value={cabinName}
               />
               <input
                 required
                 className="input"
-                placeholder="Enter location name"
+                placeholder="Enter location..."
                 onChange={onCabinLocationChange}
                 value={cabinLocation}
               />

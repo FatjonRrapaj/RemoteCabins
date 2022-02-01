@@ -49,7 +49,7 @@ export default function Login() {
               type="email"
               name="email"
               autoComplete="on"
-              className="input rounded-sm pl-2 pt-3 pb-3"
+              className="input"
               placeholder="Type your email"
               onChange={onEmailChanged}
               value={email}
@@ -61,7 +61,7 @@ export default function Login() {
             <input
               autoComplete="on"
               name="password"
-              className="input rounded-sm pl-2 pt-3 pb-3"
+              className="input"
               type="password"
               placeholder="Type your password"
               onChange={onPasswordChanged}
@@ -74,7 +74,7 @@ export default function Login() {
             disabled={!!loadingUser}
             className="mt-2 w-1/2  text-center text-md bg-green-500 p-1 rounded-sm text-white"
           >
-            {loadingUser ? <>Loading...</> : <>Sign up</>}
+            {loadingUser ? 'Loading...' : 'Sign up'}
           </button>
           <div className="label mt-2 text-center">or</div>
           <button className="mt-2 w-1/2  bg-red-500 text-white p-1 rounded-sm">
