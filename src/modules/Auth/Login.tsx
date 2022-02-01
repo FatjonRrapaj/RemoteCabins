@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useFirebase } from '../../firebase';
 import { handleAuthErrorCode } from '../../firebase/errorMessageHandler';
 
 export default function Login() {
-  const { firebaseAuth, firebase, loadingUser, setLoadingUser } = useFirebase();
+  const navigate = useNavigate();
+  const { firebaseAuth, loadingUser, setUser, setLoadingUser } = useFirebase();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -25,15 +27,16 @@ export default function Login() {
     setLoadingUser(true);
     try {
       const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
-      console.log('result: ', result);
+      setUser(result.user);
       setLoadingUser(false);
+      navigate('/home', { replace: true });
     } catch (error: any) {
       setLoadingUser(false);
       handleAuthErrorCode(error.code);
     }
   };
 
-  //todo: set these as separate compoents
+  //TODO: set input & button as separate reusable compoents
   return (
     <div className="wrapper">
       <div className="card">
@@ -67,6 +70,7 @@ export default function Login() {
 
           <button
             type="submit"
+            disabled={!!loadingUser}
             className="mt-2 w-1/2  text-center text-md bg-green-500 p-1 rounded-sm text-white"
           >
             {loadingUser ? <>Loading...</> : <>Login</>}
@@ -76,10 +80,13 @@ export default function Login() {
             Continue with Google
           </button>
           <div className="label mt-4 text-center text-gray-500">don't you have an account?</div>
-          <button className="mt-1 w-1/2  text-center text-md bg-yellow-500 text-white font-semibold p-1 rounded-sm">
-            Sign up
-          </button>
         </form>
+        <Link
+          className="mt-1 w-1/2 self-center text-center text-md  text-green-500 font-semibold p-1 rounded-sm"
+          to="/signup"
+        >
+          Sign up
+        </Link>
       </div>
     </div>
   );
