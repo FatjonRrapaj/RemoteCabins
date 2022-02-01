@@ -23,8 +23,14 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoadingUser(true);
-    const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
-    console.log('result: ', result);
+    try {
+      const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
+      console.log('result: ', result);
+    } catch ({ code, message, name }) {
+      console.error('error code ', code);
+      console.error('error message ', message);
+      console.error('error name ', name);
+    }
   };
 
   return (
