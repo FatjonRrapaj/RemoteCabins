@@ -47,6 +47,7 @@ export default ({ children }: Props) => {
           setIsAuthenticated(false);
         }
       } catch (error: any) {
+        setLoadingUser(false);
         handleAuthErrorCode(error.code);
       }
     });

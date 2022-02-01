@@ -26,18 +26,21 @@ export default function Login() {
     try {
       const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
       console.log('result: ', result);
+      setLoadingUser(false);
     } catch (error: any) {
+      setLoadingUser(false);
       handleAuthErrorCode(error.code);
     }
   };
 
+  //todo: set these as separate compoents
   return (
     <div className="wrapper">
       <div className="card">
-        <form className="flex flex-col items-center" onSubmit={handleSubmit}>
+        <form className="flex w-full flex-col items-center" onSubmit={handleSubmit}>
           <div className="title">LOGIN</div>
-          <label>
-            <div className="label mt-6">email</div>
+          <label className="w-full mt-6">
+            <div className="label ">email</div>
             <input
               type="email"
               name="email"
@@ -49,8 +52,8 @@ export default function Login() {
             />
           </label>
 
-          <label>
-            <div className="label mt-4">password</div>
+          <label className="w-full mt-4">
+            <div className="label">password</div>
             <input
               autoComplete="on"
               name="password"
