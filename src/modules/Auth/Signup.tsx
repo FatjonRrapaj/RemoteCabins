@@ -29,7 +29,7 @@ export default function Login() {
       const result = await createUserWithEmailAndPassword(firebaseAuth, email, password);
       setUser(result.user);
       console.log('result: ', result);
-      navigate('/home', { replace: true });
+      navigate('/', { replace: true });
       setLoadingUser(false);
     } catch (error: any) {
       setLoadingUser(false);

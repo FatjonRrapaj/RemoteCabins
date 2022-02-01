@@ -29,7 +29,7 @@ export default function Login() {
       const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
       setUser(result.user);
       setLoadingUser(false);
-      navigate('/home', { replace: true });
+      navigate('/', { replace: true });
     } catch (error: any) {
       setLoadingUser(false);
       handleAuthErrorCode(error.code);
@@ -43,7 +43,7 @@ export default function Login() {
         <form className="flex w-full flex-col items-center" onSubmit={handleSubmit}>
           <div className="title">LOGIN</div>
           <label className="w-full mt-6">
-            <div className="label ">email</div>
+            <div className="label">email</div>
             <input
               type="email"
               name="email"

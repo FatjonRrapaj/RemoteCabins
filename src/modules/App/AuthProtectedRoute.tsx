@@ -1,14 +1,22 @@
-import { useLocation, Navigate, Route } from 'react-router-dom';
-
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useFirebase } from '../../firebase';
 
 function AuthProtectedRoute({ children }: { children: JSX.Element }) {
-  const { isAuthenticated } = useFirebase();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { loadingUser, firebaseAuth } = useFirebase();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  useEffect(() => {
+    firebaseAuth?.onAuthStateChanged(function (user) {
+      if (!user) navigate('/login', { replace: true, state: { from: location } });
+    });
+  }, []);
+
+  if (!firebaseAuth) {
+    return null;
   }
+
   return children;
 }
 
