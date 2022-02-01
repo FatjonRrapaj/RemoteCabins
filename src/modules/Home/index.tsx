@@ -51,11 +51,16 @@ export default function Home() {
         //todo: ?? any manual solution for this?
       });
   }
-
+  //todo: refactor modal into a new file
   function handleAddCabinPressed(event: MouseEvent): void {
     event.preventDefault();
     //open modal with form and cabin data
     setAddCabinModalVisible(true);
+  }
+
+  function handleCabinModalClosePressed(event: MouseEvent): void {
+    event.preventDefault();
+    setAddCabinModalVisible(false);
   }
 
   function onCabinNameChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -86,27 +91,34 @@ export default function Home() {
 
   function renderModal(): JSX.Element {
     return (
-      <div className="wrapper bg-grey-600 opacity-5">
+      <div className="h-full w-full bg-black bg-opacity-50 absolute flex justify-center">
         <div className="card">
+          <button
+            className="self-start mb-4 text-xs underline "
+            onClick={handleCabinModalClosePressed}
+          >
+            close modal
+          </button>
+          <div className="title text-lg mb-4">Add a new Cabin</div>
           <form onSubmit={handleSaveCabinSubmit}>
             <label>
               <input
                 required
                 className="input"
-                placeholder="Enter cabin name..."
+                placeholder="Enter cabin name"
                 onChange={onCabinNameChange}
                 value={cabinName}
               />
               <input
                 required
                 className="input"
-                placeholder="Enter location..."
+                placeholder="Enter cabin location"
                 onChange={onCabinLocationChange}
                 value={cabinLocation}
               />
               <button
                 disabled={loadingSavingCabin}
-                className="bg-green-500 rounded-sm self-end align-bottom p-2 mt-6 text-white font-semibold"
+                className="bg-green-500 rounded-sm align-top p-2 mt-6 text-white font-semibold"
               >
                 {loadingSavingCabin ? 'Loading...' : 'Save Cabin'}
               </button>
