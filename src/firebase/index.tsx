@@ -1,45 +1,57 @@
 import { createContext, useEffect, useState, useContext } from 'react';
 import firebaseCredentials from './firebaseCredentials';
-import firebaseApp from 'firebase/compat/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+import { initializeApp, getApp, getApps } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 import { Props, ContextType } from './types';
 
-const FirebaseContext = createContext<ContextType | undefined>(undefined);
+const FirebaseContext = createContext<ContextType>({
+  isAuthenticated: false,
+  firebase: null,
+  database: {},
+  firebaseAuth: {},
+  user: null,
+  setUser: () => {},
+  loadingUser: false,
+  setLoadingUser: () => {},
+});
 
 export default ({ children }: Props) => {
-  const [firebase, setFirebase] = useState<ContextType['firebase']>({});
+  const [firebase, setFirebase] = useState<ContextType['firebase']>(null);
   const [database, setDatabase] = useState<ContextType['database']>({});
   const [firebaseAuth, setFirebaseAuth] = useState<ContextType['firebaseAuth']>({});
   const [user, setUser] = useState<ContextType['user']>(null);
-  const [loadingUser, setLoadingUser] = useState<ContextType['loadingUser']>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<ContextType['isAuthenticated']>(false);
+  const [loadingUser, setLoadingUser] = useState<ContextType['loadingUser']>(false);
 
   useEffect(() => {
     //Check if firebase is already initialized
-    if (firebase && firebaseApp.apps.length) return;
 
+    if (getApps().length) return;
     //Initialize firebase
-    firebaseApp.initializeApp(firebaseCredentials);
+    const app = initializeApp(firebaseCredentials);
     //Set up analytics
-    if ('measurementId' in firebaseCredentials) firebaseApp.analytics();
     setFirebase({
-      firebaseApp,
+      app,
     });
     //Database
-    setDatabase(firebaseApp.firestore());
+    setDatabase(getFirestore(app));
     //Auth
-    const auth = firebaseApp.auth();
+    const auth = getAuth(app);
     setFirebaseAuth(auth);
+
     //Listen to authenticated user
-    const unsubscribeFromAuth = firebaseApp.auth().onAuthStateChanged(async (user) => {
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
       try {
         if (user) {
           const { uid, displayName, email, photoURL } = user;
           setUser({ uid, displayName, email, photoURL });
+          setIsAuthenticated(true);
           setLoadingUser(false);
         } else {
           setUser(null);
+          setIsAuthenticated(false);
         }
       } catch (error) {
         console.error(error);
@@ -61,6 +73,7 @@ export default ({ children }: Props) => {
         setUser,
         loadingUser,
         setLoadingUser,
+        isAuthenticated,
       }}
     >
       {children}

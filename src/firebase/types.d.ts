@@ -13,13 +13,14 @@ type User = {
 
 //needed for the context in order to work
 type ContextType = {
-  firebase: !Object;
-  database: !Object;
-  firebaseAuth: !Object;
+  firebase: App | null;
+  database: !Firestore;
+  firebaseAuth: !Auth;
   user: User | null;
-  setUser: !Object;
+  setUser: !Function;
   loadingUser: !Object;
-  setLoadingUser: !Object;
+  setLoadingUser: !Function;
+  isAuthenticated: !Boolean;
 };
 
 export { Props, ContextType };

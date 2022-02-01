@@ -47,11 +47,11 @@ code {
   }
 
   .label {
-    @apply self-stretch text-gray-900 text-xs text-left mb-1;
+    @apply self-stretch text-gray-900 text-sm text-left mb-1;
   }
 
   .title {
-    @apply text-base self-stretch text-center font-bold;
+    @apply text-2xl self-stretch text-center font-bold;
   }
 
   .separator {
