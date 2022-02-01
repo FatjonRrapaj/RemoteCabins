@@ -2,10 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from '../Auth/Login';
 import SignUp from '../Auth/Signup';
+import Home from '../Home';
 
 import AuthProtectedRoute from './AuthProtectedRoute';
-
-const Home = () => <div>HOMEEEE</div>;
 
 export default function () {
   return (

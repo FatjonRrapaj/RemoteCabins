@@ -6,21 +6,12 @@ import { getAuth } from 'firebase/auth';
 
 import { Props, ContextType } from './types';
 
-const FirebaseContext = createContext<ContextType>({
-  isAuthenticated: false,
-  firebase: null,
-  database: {},
-  firebaseAuth: {},
-  user: null,
-  setUser: () => {},
-  loadingUser: false,
-  setLoadingUser: () => {},
-});
+const FirebaseContext = createContext<ContextType>(null!);
 
 export default ({ children }: Props) => {
   const [firebase, setFirebase] = useState<ContextType['firebase']>(null);
-  const [database, setDatabase] = useState<ContextType['database']>({});
-  const [firebaseAuth, setFirebaseAuth] = useState<ContextType['firebaseAuth']>({});
+  const [database, setDatabase] = useState<ContextType['database']>(null!);
+  const [firebaseAuth, setFirebaseAuth] = useState<ContextType['firebaseAuth']>(null!);
   const [user, setUser] = useState<ContextType['user']>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<ContextType['isAuthenticated']>(false);
   const [loadingUser, setLoadingUser] = useState<ContextType['loadingUser']>(false);
