@@ -23,10 +23,9 @@ body,
 
 #root {
   margin: 0px;
+  padding: 0px;
   width: 100vw;
   height: 100vh;
-
-  background-color: green;
 }
 
 code {
@@ -35,11 +34,11 @@ code {
 
 @layer components {
   .wrapper {
-    @apply w-full h-full bg-red-300 flex items-center justify-center;
+    @apply w-full h-full bg-gray-500 flex items-center justify-center bg-[url('../public/forest.svg')] bg-blend-soft-light;
   }
 
   .card {
-    @apply w-2/5 pt-8 pb-8 shadow-md bg-white rounded-lg p-4 flex flex-col justify-center self-center justify-self-center;
+    @apply w-2/5 pt-8 pb-8 shadow-xl bg-white rounded-lg p-4 flex flex-col justify-center self-center justify-self-center;
   }
 
   .input {

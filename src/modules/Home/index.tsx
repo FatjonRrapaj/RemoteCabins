@@ -177,7 +177,7 @@ export default function Home() {
         </button>
       </div>
       <button
-        className="bg-red-500 rounded self-end align-bottom p-2 mb-6 text-white font-semibold"
+        className="bg-white shadow-xl rounded self-end align-bottom p-2 mb-6 text-black font-semibold"
         onClick={handleSignOut}
       >
         Sign out
