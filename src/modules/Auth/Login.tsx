@@ -45,6 +45,7 @@ export default function Login() {
           <label className="w-full mt-6">
             <div className="label">email</div>
             <input
+              required
               type="email"
               name="email"
               autoComplete="on"
@@ -58,6 +59,7 @@ export default function Login() {
           <label className="w-full mt-4">
             <div className="label">password</div>
             <input
+              required
               autoComplete="on"
               name="password"
               className="input"

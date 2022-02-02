@@ -1,14 +1,15 @@
-import React, { MouseEvent, useEffect, useState, useRef, InputHTMLAttributes } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { collection, addDoc, onSnapshot, doc, CollectionReference } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 import { useFirebase } from '../../firebase';
 import { handleAuthErrorCode, handleDbErrorCode } from '../../firebase/errorMessageHandler';
 
 type Cabin = {
-  name: string;
-  location: string;
+  cabinName: string;
+  cabinLocation: string;
+  id?: string;
 };
 
 export default function Home() {
@@ -18,25 +19,34 @@ export default function Home() {
   const [addCabinModalVisible, setAddCabinModalVisible] = useState<Boolean>(false);
   const [cabinName, setCabinName] = useState<string>('');
   const [cabinLocation, setCabinLocation] = useState<string>('');
+  const [loadingReceivingCabins, setLoadingReceivingCabins] = useState<boolean>(true);
   const [loadingSavingCabin, setLoadingSavingCabin] = useState<boolean>(false);
 
   useEffect(() => {
-    const unsubscribeCabinsChanges = onSnapshot(
+    const unsub = onSnapshot(
       collection(database, 'cabins'),
-      (collection) => {
-        console.log('cabinsCollection: ', collection.docs);
-        const cabins = collection.docs.map((element) => {
-          return element;
+      (cabinsCollection) => {
+        const currentCabins = cabinsCollection.docs.map((doc) => {
+          const id = doc.id;
+          const { cabinName, cabinLocation } = doc.data();
+          return {
+            id,
+            cabinName,
+            cabinLocation,
+          };
         });
-        setCabins(cabins as unknown as Cabin[]);
+
+        setCabins(currentCabins as unknown as Cabin[]);
+        setLoadingReceivingCabins(false);
       },
       (error) => {
-        console.error('cabinsCollectionChanges error: ', error);
+        setLoadingReceivingCabins(false);
+        handleDbErrorCode(error.code);
       },
     );
 
     return () => {
-      unsubscribeCabinsChanges();
+      unsub();
     };
   }, []);
 
@@ -51,10 +61,9 @@ export default function Home() {
         //todo: ?? any manual solution for this?
       });
   }
-  //todo: refactor modal into a new file
+
   function handleAddCabinClicked(event: MouseEvent): void {
     event.preventDefault();
-    //open modal with form and cabin data
     setAddCabinModalVisible(true);
   }
 
@@ -75,38 +84,52 @@ export default function Home() {
 
   async function handleSaveCabinSubmit(event: React.ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoadingSavingCabin(true);
     try {
       const docRef = await addDoc(collection(database, 'cabins'), {
         cabinName,
         cabinLocation,
       });
+      setLoadingSavingCabin(false);
+      setAddCabinModalVisible(false);
       alert('Successfully added cabin');
       setCabinName('');
       setCabinLocation('');
       console.log('docRef: ', docRef);
     } catch (error: any) {
+      setLoadingSavingCabin(false);
       handleDbErrorCode(error.code);
     }
   }
 
+  function renderCabins(): JSX.Element[] {
+    return cabins.map(({ cabinName, cabinLocation, id }: Cabin): JSX.Element => {
+      return (
+        <div className="flex flex-row justify-between mt-6" key={id}>
+          <span className="flex-1 truncate">🏕️ {cabinName}</span>
+          <span className="flex-1 text-left truncate">📍 {cabinLocation}</span>
+        </div>
+      );
+    });
+  }
+
+  //todo: refactor modal into a new file
   function renderModal(): JSX.Element {
     return (
-      <div
-        className="h-full w-full bg-black bg-opacity-50 absolute flex justify-center"
-        onClick={handleCabinModalCloseClicked}
-      >
+      <div className="h-full w-full bg-black bg-opacity-50 absolute flex justify-center">
         <div className="card">
           <button
             className="self-start mb-4 text-xs underline "
             onClick={handleCabinModalCloseClicked}
           >
-            close modal
+            close
           </button>
           <div className="title text-lg mb-4">Add a new Cabin</div>
           <form className="flex flex-col items-center " onSubmit={handleSaveCabinSubmit}>
             <label className="w-full">
               <input
                 required
+                name="cabinName"
                 className="input"
                 placeholder="Enter cabin name"
                 onChange={onCabinNameChange}
@@ -114,9 +137,13 @@ export default function Home() {
               />
             </label>
 
+            {/**
+             * TODO: Change this into some legit location provider, like google maps.
+             */}
             <label className="w-full mt-4">
               <input
                 required
+                name="cabinLocation"
                 className="input"
                 placeholder="Enter cabin location"
                 onChange={onCabinLocationChange}
@@ -138,10 +165,9 @@ export default function Home() {
   return (
     <div className="wrapper items-start">
       <div className="card self-start w-4/5 mt-40">
-        {cabins.length === 0 && <>there is not any cabin added yet</>}
-        {cabins.map(({ name, location }) => {
-          return <div>{name}</div>;
-        })}
+        {loadingReceivingCabins && <>🏕️ are loading... </>}
+        {!loadingReceivingCabins && cabins.length === 0 && <>There is not any cabin added yet</>}
+        {renderCabins()}
         <button
           className="bg-green-500 rounded self-end align-bottom p-2 mt-6 text-white font-semibold"
           onClick={handleAddCabinClicked}
