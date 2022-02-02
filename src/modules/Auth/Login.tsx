@@ -41,6 +41,7 @@ export default function Login() {
     <div className="wrapper">
       <div className="card">
         <form className="flex w-full flex-col items-center" onSubmit={handleSubmit}>
+          <div className="title text-green-900 mb-4">🌳 Remote Cabins</div>
           <div className="title">LOGIN</div>
           <label className="w-full mt-6">
             <div className="label">email</div>
