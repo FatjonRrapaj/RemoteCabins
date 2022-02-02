@@ -91,7 +91,10 @@ export default function Home() {
 
   function renderModal(): JSX.Element {
     return (
-      <div className="h-full w-full bg-black bg-opacity-50 absolute flex justify-center">
+      <div
+        className="h-full w-full bg-black bg-opacity-50 absolute flex justify-center"
+        onClick={handleCabinModalClosePressed}
+      >
         <div className="card">
           <button
             className="self-start mb-4 text-xs underline "
@@ -100,8 +103,8 @@ export default function Home() {
             close modal
           </button>
           <div className="title text-lg mb-4">Add a new Cabin</div>
-          <form onSubmit={handleSaveCabinSubmit}>
-            <label>
+          <form className="flex flex-col items-center " onSubmit={handleSaveCabinSubmit}>
+            <label className="w-full">
               <input
                 required
                 className="input"
@@ -109,6 +112,9 @@ export default function Home() {
                 onChange={onCabinNameChange}
                 value={cabinName}
               />
+            </label>
+
+            <label className="w-full mt-4">
               <input
                 required
                 className="input"
@@ -116,13 +122,13 @@ export default function Home() {
                 onChange={onCabinLocationChange}
                 value={cabinLocation}
               />
-              <button
-                disabled={loadingSavingCabin}
-                className="bg-green-500 rounded-sm align-top p-2 mt-6 text-white font-semibold"
-              >
-                {loadingSavingCabin ? 'Loading...' : 'Save Cabin'}
-              </button>
             </label>
+            <button
+              disabled={loadingSavingCabin}
+              className="bg-green-500 rounded self-center p-2 mt-6 text-white font-semibold"
+            >
+              {loadingSavingCabin ? 'Loading...' : 'Save Cabin'}
+            </button>
           </form>
         </div>
       </div>
@@ -137,14 +143,14 @@ export default function Home() {
           return <div>{name}</div>;
         })}
         <button
-          className="bg-green-500 rounded-sm self-end align-bottom p-2 mt-6 text-white font-semibold"
+          className="bg-green-500 rounded self-end align-bottom p-2 mt-6 text-white font-semibold"
           onClick={handleAddCabinPressed}
         >
           Add a new cabin
         </button>
       </div>
       <button
-        className="bg-red-500 rounded-sm self-end align-bottom p-2 mb-6 text-white font-semibold"
+        className="bg-red-500 rounded self-end align-bottom p-2 mb-6 text-white font-semibold"
         onClick={handleSignOut}
       >
         Sign out

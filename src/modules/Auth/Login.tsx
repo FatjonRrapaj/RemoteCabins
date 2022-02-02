@@ -71,18 +71,18 @@ export default function Login() {
           <button
             type="submit"
             disabled={!!loadingUser}
-            className="mt-2 w-1/2  text-center text-md bg-green-500 p-1 rounded-sm text-white"
+            className="mt-2 w-1/2  text-center text-md bg-green-500 p-1 rounded text-white"
           >
             {loadingUser ? 'Loading...' : 'Log in'}
           </button>
           <div className="label mt-2 text-center">or</div>
-          <button className="mt-2 w-1/2  bg-red-500 text-white p-1 rounded-sm">
+          <button className="mt-2 w-1/2  bg-red-500 text-white p-1 rounded">
             Continue with Google
           </button>
           <div className="label mt-4 text-center text-gray-500">don't you have an account?</div>
         </form>
         <Link
-          className="mt-1 w-1/2 self-center text-center text-md  text-green-500 font-semibold p-1 rounded-sm"
+          className="mt-1 w-1/2 self-center text-center text-md  text-green-500 font-semibold p-1 rounded"
           to="/signup"
         >
           Sign up

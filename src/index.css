@@ -43,7 +43,7 @@ code {
   }
 
   .input {
-    @apply w-full h-6  border border-gray-400 p-1 mb-2 rounded-sm pl-2 pt-3 pb-3;
+    @apply w-full h-6  border border-gray-400 p-1 mb-2 rounded pl-2 pt-3 pb-3;
   }
 
   .label {
