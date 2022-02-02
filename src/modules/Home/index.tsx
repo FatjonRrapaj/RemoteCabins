@@ -9,7 +9,8 @@ import { handleAuthErrorCode, handleDbErrorCode } from '../../firebase/errorMess
 type Cabin = {
   cabinName: string;
   cabinLocation: string;
-  id?: string;
+  id: string;
+  ownerId: string;
 };
 
 export default function Home() {
@@ -28,11 +29,12 @@ export default function Home() {
       (cabinsCollection) => {
         const currentCabins = cabinsCollection.docs.map((doc) => {
           const id = doc.id;
-          const { cabinName, cabinLocation } = doc.data();
+          const { cabinName, cabinLocation, ownerId } = doc.data();
           return {
             id,
             cabinName,
             cabinLocation,
+            ownerId,
           };
         });
 
@@ -89,6 +91,7 @@ export default function Home() {
       const docRef = await addDoc(collection(database, 'cabins'), {
         cabinName,
         cabinLocation,
+        ownerId: firebaseAuth.currentUser!.uid,
       });
       setLoadingSavingCabin(false);
       setAddCabinModalVisible(false);
@@ -165,7 +168,7 @@ export default function Home() {
   return (
     <div className="wrapper items-start">
       <div className="card self-start w-4/5 mt-40">
-        <div className="title text-left">🌳 Remote Cabins</div>
+        <div className="title text-left text-green-900">🌳 Remote Cabins</div>
         {loadingReceivingCabins && <>🏕️ are loading... </>}
         {!loadingReceivingCabins && cabins.length === 0 && <>There is not any cabin added yet</>}
         {renderCabins()}

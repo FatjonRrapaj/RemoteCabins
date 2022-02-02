@@ -24,7 +24,6 @@ export default ({ children }: Props) => {
     setFirebase(app);
     //Database
     const firestore = getFirestore(app);
-    console.log('firestore at context: ', firestore);
     setDatabase(firestore);
     //Auth
     const auth = getAuth(app);
