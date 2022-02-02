@@ -52,13 +52,13 @@ export default function Home() {
       });
   }
   //todo: refactor modal into a new file
-  function handleAddCabinPressed(event: MouseEvent): void {
+  function handleAddCabinClicked(event: MouseEvent): void {
     event.preventDefault();
     //open modal with form and cabin data
     setAddCabinModalVisible(true);
   }
 
-  function handleCabinModalClosePressed(event: MouseEvent): void {
+  function handleCabinModalCloseClicked(event: MouseEvent): void {
     event.preventDefault();
     setAddCabinModalVisible(false);
   }
@@ -93,12 +93,12 @@ export default function Home() {
     return (
       <div
         className="h-full w-full bg-black bg-opacity-50 absolute flex justify-center"
-        onClick={handleCabinModalClosePressed}
+        onClick={handleCabinModalCloseClicked}
       >
         <div className="card">
           <button
             className="self-start mb-4 text-xs underline "
-            onClick={handleCabinModalClosePressed}
+            onClick={handleCabinModalCloseClicked}
           >
             close modal
           </button>
@@ -144,7 +144,7 @@ export default function Home() {
         })}
         <button
           className="bg-green-500 rounded self-end align-bottom p-2 mt-6 text-white font-semibold"
-          onClick={handleAddCabinPressed}
+          onClick={handleAddCabinClicked}
         >
           Add a new cabin
         </button>
