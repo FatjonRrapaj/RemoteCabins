@@ -165,6 +165,7 @@ export default function Home() {
   return (
     <div className="wrapper items-start">
       <div className="card self-start w-4/5 mt-40">
+        <div className="title text-left">🌳 Remote Cabins</div>
         {loadingReceivingCabins && <>🏕️ are loading... </>}
         {!loadingReceivingCabins && cabins.length === 0 && <>There is not any cabin added yet</>}
         {renderCabins()}
